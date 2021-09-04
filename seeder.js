@@ -30,7 +30,10 @@ const seedDB = async () => {
 
     // Creating old data records
     for (i = 0; i < 10; i++) {
+        const date = new Date();
+        const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
         const oldData = new OldData({
+            recordDate: `${month}-${day}-${year}`,
             violationCount: Math.floor(Math.random() * 500),
             headcount: Math.floor(Math.random() * 1000)
         });

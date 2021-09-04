@@ -5,16 +5,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <title>Distancing Analytics</title>
 </head>
 
-<body>
-    <h1>Hello from Analytics Dashboard</h1>
-
-    <h2>Current Data: <%= currentData.violationCount %>, <%= currentData.headcount %> </h2>
-    <% for (let dataRecord of oldData) { %>
-        <p>Old Data: <%= dataRecord.violationCount %>, <%= dataRecord.headcount %></p>
-    <% } %> 
+<body class="bg-secondary bg-opacity-50">
+    <div class="container">
+        <div class="container-fluid text-white bg-dark rounded-1 mt-3 p-3">
+            <h2>Distancing Data</h2>
+            <h4>View today's data, or previous records.</h4>
+        </div>
+        <div class="mt-3">
+            <div class="row">
+                <div class="col-4">
+                    <!-- Today's data -->
+                    <div class="container text-white bg-dark rounded-1 p-3">
+                        <h3>Today's Data</h3>
+                        <hr>
+                        <h5>Violations: <%= currentData.violationCount %></h5>
+                        <h5>Headcount: <%= currentData.headcount %></h5>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Violation Count</th>
+                                <th scope="col">Headcount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Looping through old records -->
+                            <% for (let dataRecord of oldData) { %>
+                                <tr>
+                                    <th scope="row"><%= dataRecord.recordDate %></th>
+                                    <td><%= dataRecord.violationCount %></td>
+                                    <td><%= dataRecord.headcount %></td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
