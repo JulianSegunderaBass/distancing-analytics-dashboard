@@ -23,6 +23,8 @@ mongoose.connect('mongodb://localhost:27017/distancing-data', {
 app.set('view engine', 'ejs');
 // Accessing EJS views from the views directory
 app.set('views', path.join(__dirname, 'views'));
+// Accessing static assets
+app.use(express.static(path.join(__dirname, 'javascripts')));
 app.use(express.urlencoded({ extended: true }));
 
 // Routes

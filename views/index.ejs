@@ -10,7 +10,7 @@
     <title>Distancing Analytics</title>
 </head>
 
-<body class="bg-secondary bg-opacity-50">
+<body class="bg-secondary bg-opacity-25">
     <div class="container">
         <div class="container-fluid text-white bg-dark rounded-1 mt-3 p-3">
             <h2>Distancing Data</h2>
@@ -20,15 +20,14 @@
             <div class="row">
                 <div class="col-4">
                     <!-- Today's data -->
-                    <div class="container text-white bg-dark rounded-1 p-3">
+                    <div class="container-fluid text-white bg-dark rounded-1 p-3">
                         <h3>Today's Data</h3>
                         <hr>
                         <h5>Violations: <%= currentData.violationCount %></h5>
                         <h5>Headcount: <%= currentData.headcount %></h5>
                     </div>
-                </div>
-                <div class="col-8">
-                    <table class="table table-dark table-striped">
+                    <!-- Old data table -->
+                    <table class="table table-dark table-striped rounded-1 mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">Date</th>
@@ -38,15 +37,19 @@
                         </thead>
                         <tbody>
                             <!-- Looping through old records -->
-                            <% for (let dataRecord of oldData) { %>
+                            <% for (let record of oldData) { %>
                                 <tr>
-                                    <th scope="row"><%= dataRecord.recordDate %></th>
-                                    <td><%= dataRecord.violationCount %></td>
-                                    <td><%= dataRecord.headcount %></td>
+                                    <th scope="row"><%= record.recordDate %></th>
+                                    <td><%= record.violationCount %></td>
+                                    <td><%= record.headcount %></td>
                                 </tr>
                             <% } %>
                         </tbody>
                     </table>
+                </div>
+                <div class="col-8">
+                    <!-- For Chart -->
+                    <canvas id="myChart"></canvas>
                 </div>
             </div>
         </div>
@@ -59,6 +62,76 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
         integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/"
         crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
+    <script src="dataChart.js"></script>
+
+    <script>
+        // Parsing to access EJS data
+        var oldData = '<%- JSON.stringify(oldData) %>';
+        var workableData = JSON.parse(oldData);
+        // Defining arrays for the chart
+        let dateArray = [];
+        let violationArray = [];
+        let headcountArray = [];
+
+        // Pushing record data to arrays
+        for (let record of workableData) {
+            dateArray.push(record.recordDate);
+            violationArray.push(record.violationCount);
+            headcountArray.push(record.headcount);
+        }
+
+        // For displaying charts
+        const myChart = document.getElementById('myChart').getContext('2d');
+
+        Chart.defaults.global.defaultFontColor = '#000';
+        const testChart = new Chart(myChart, {
+            type: 'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+            data: {
+                labels: dateArray,
+                datasets: [
+                    {
+                        label:'Violations',
+                        data: violationArray,
+                        backgroundColor: '#002AA8',
+                        fill: true,
+                        borderColor: '#000',
+                        color: '#000',
+                        tension: 0.3
+                    },
+                    {
+                        label:'Headcount',
+                        data: headcountArray,
+                        backgroundColor: '#F5B205',
+                        fill: true,
+                        borderColor: '#000',
+                        color: '#000',
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Violation Records',
+                    fontSize: 25
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        top: 0
+                    }
+                },
+                tooltips: {
+                    enabled: true
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
