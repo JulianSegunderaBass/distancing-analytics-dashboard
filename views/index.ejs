@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <title>Distancing Analytics</title>
 </head>
 
@@ -25,6 +26,9 @@
                         <hr>
                         <h5>Violations: <%= currentData.violationCount %></h5>
                         <h5>Headcount: <%= currentData.headcount %></h5>
+                        <form action="/" method="POST">
+                            <button class="btn btn-success">Archive Data</button>
+                        </form>
                     </div>
                     <!-- Old data table -->
                     <table class="table table-dark table-striped rounded-1 mt-3">
@@ -33,6 +37,7 @@
                                 <th scope="col">Date</th>
                                 <th scope="col">Violation Count</th>
                                 <th scope="col">Headcount</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,6 +47,11 @@
                                     <th scope="row"><%= record.recordDate %></th>
                                     <td><%= record.violationCount %></td>
                                     <td><%= record.headcount %></td>
+                                    <td>
+                                        <form action="/<%= record._id %>?_method=DELETE" method="POST">
+                                            <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                             <% } %>
                         </tbody>
