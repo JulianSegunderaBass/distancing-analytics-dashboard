@@ -4,7 +4,7 @@ const OldData = require('../models/oldData');
 
 module.exports = async () => {
     // Mongoose Connection
-    mongoose.connect('mongodb://localhost:27017/distancing-data', {
+    mongoose.connect('mongodb+srv://<username>:<password>@cluster0.k7pme.mongodb.net/distancingData?retryWrites=true&w=majority', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })

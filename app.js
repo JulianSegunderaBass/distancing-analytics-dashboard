@@ -8,8 +8,12 @@ const methodOverride = require('method-override');
 const CurrentData = require('./models/currentData');
 const OldData = require('./models/oldData');
 
+// Old URL: mongodb://localhost:27017/distancing-data
+// Atlas URL: mongodb+srv://<username>:<password>@cluster0.k7pme.mongodb.net/distancingData?retryWrites=true&w=majority
+// Replace <username> and <password> with the specified credentials
+
 // Mongoose Connection
-mongoose.connect('mongodb://localhost:27017/distancing-data', { 
+mongoose.connect('mongodb+srv://<username>:<password>@cluster0.k7pme.mongodb.net/distancingData?retryWrites=true&w=majority', { 
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
