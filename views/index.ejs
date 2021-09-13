@@ -9,6 +9,27 @@
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <title>Distancing Analytics</title>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+        ::-webkit-scrollbar-track {
+            background: #bdbdbd;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6c6c6c;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #474747;
+        }
+        .recent-records-height {
+            height: 30vh;
+        }
+        .old-records-height {
+            height: 40vh;
+        }
+    </style>
 </head>
 
 <body class="bg-secondary bg-opacity-25">
@@ -20,42 +41,68 @@
         <div class="mt-3">
             <div class="row">
                 <div class="col-4">
-                    <!-- Today's data -->
-                    <div class="container-fluid text-white bg-dark rounded-1 p-3">
-                        <h3>Today's Data</h3>
-                        <hr>
-                        <h5>Violations: <%= currentData.violationCount %></h5>
-                        <h5>Headcount: <%= currentData.headcount %></h5>
-                        <form action="/" method="POST">
-                            <button class="btn btn-success">Archive Data</button>
-                        </form>
+                    <!-- Recent data -->
+                    <div class="overflow-auto d-block recent-records-height mt-3">
+                        <table class="table table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col" colspan="4" class="text-center">Recent Records</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Violation Count</th>
+                                    <th scope="col">Headcount</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Looping through old records -->
+                                <% for (let record of recentData) { %>
+                                    <tr>
+                                        <th scope="row"><%= record.recordDate %></th>
+                                        <td><%= record.violationCount %></td>
+                                        <td><%= record.headcount %></td>
+                                        <td>
+                                            <form action="/<%= record._id %> " method="POST">
+                                                <button class="btn btn-success"><i class="fas fa-file-archive"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
                     </div>
                     <!-- Old data table -->
-                    <table class="table table-dark table-striped rounded-1 mt-3">
-                        <thead>
-                            <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Violation Count</th>
-                                <th scope="col">Headcount</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Looping through old records -->
-                            <% for (let record of oldData) { %>
+                    <div class="overflow-auto d-block old-records-height mt-3">
+                        <table class="table table-dark table-striped">
+                            <thead>
                                 <tr>
-                                    <th scope="row"><%= record.recordDate %></th>
-                                    <td><%= record.violationCount %></td>
-                                    <td><%= record.headcount %></td>
-                                    <td>
-                                        <form action="/<%= record._id %>?_method=DELETE" method="POST">
-                                            <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                        </form>
-                                    </td>
+                                    <th scope="col" colspan="4" class="text-center">Older Records</th>
                                 </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Violation Count</th>
+                                    <th scope="col">Headcount</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Looping through old records -->
+                                <% for (let record of oldData) { %>
+                                    <tr>
+                                        <th scope="row"><%= record.recordDate %></th>
+                                        <td><%= record.violationCount %></td>
+                                        <td><%= record.headcount %></td>
+                                        <td>
+                                            <form action="/<%= record._id %>?_method=DELETE" method="POST">
+                                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="col-8">
                     <!-- For Chart -->
@@ -105,7 +152,7 @@
                     {
                         label:'Violations',
                         data: violationArray,
-                        backgroundColor: '#002AA8',
+                        backgroundColor: '#e07502',
                         fill: true,
                         borderColor: '#000',
                         color: '#000',
@@ -114,7 +161,7 @@
                     {
                         label:'Headcount',
                         data: headcountArray,
-                        backgroundColor: '#F5B205',
+                        backgroundColor: '#fcca00',
                         fill: true,
                         borderColor: '#000',
                         color: '#000',

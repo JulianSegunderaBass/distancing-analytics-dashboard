@@ -1,6 +1,6 @@
 // For creating dummy data (both old and new)
 const mongoose = require('mongoose');
-const CurrentData = require('./models/currentData');
+const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
 
 // Mongoose Connection
@@ -18,18 +18,23 @@ mongoose.connect('mongodb+srv://<username>:<password>@cluster0.k7pme.mongodb.net
 
 const seedDB = async () => {
     // Deleting old data first
-    await CurrentData.deleteMany({});
+    await RecentData.deleteMany({});
     await OldData.deleteMany({});
 
-    // Creating new record for "present" data
-    const currentData = new CurrentData({
-        violationCount: Math.floor(Math.random() * 500),
-        headcount: Math.floor(Math.random() * 1000)
-    });
-    await currentData.save();
+    // Creating recent data records
+    for (i = 0; i < 3; i++) {
+        const date = new Date();
+        const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+        const recentData = new RecentData({
+            recordDate: `${month}-${day}-${year}`,
+            violationCount: Math.floor(Math.random() * 500),
+            headcount: Math.floor(Math.random() * 1000)
+        });
+        await recentData.save();
+    }
 
     // Creating old data records
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 15; i++) {
         const date = new Date();
         const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
         const oldData = new OldData({

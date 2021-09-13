@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
 // Models
-const CurrentData = require('./models/currentData');
+const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
 
 // Old URL: mongodb://localhost:27017/distancing-data
@@ -36,37 +36,24 @@ app.use(methodOverride('_method'));
 
 // Routes
 app.get('/', async (req, res) => {
-    const data = await CurrentData.find({});
-    // Getting first element of currentData array
-    const currentData = data[0];
+    const recentData = await RecentData.find({});
     const oldData = await OldData.find({});
-    res.render('index', { currentData, oldData });
+    res.render('index', { recentData, oldData });
 });
 
-app.post('/', async (req, res) => {
-    const date = new Date();
-    const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
-    const data = await CurrentData.find({});
-    // Getting first element of currentData array
-    const currentData = data[0];
+app.post('/:recordID', async (req, res) => {
+    const recentData = await RecentData.findById(req.params.recordID);
 
-    // Saving current data as archived record
+    // Saving recent data as archived records
     const archivedData = new OldData({
-        recordDate: `${month}-${day}-${year}`,
-        violationCount: currentData.violationCount,
-        headcount: currentData.headcount
+        recordDate: recentData.recordDate,
+        violationCount: recentData.violationCount,
+        headcount: recentData.headcount,
     });
     await archivedData.save();
 
-    // Deleting the currentData record
-    const deleteRecord = await CurrentData.deleteMany({});
-
-    // Creating new random current data
-    const newData = new CurrentData({
-        violationCount: Math.floor(Math.random() * 500),
-        headcount: Math.floor(Math.random() * 1000)
-    });
-    await newData.save();
+    // Deleting the record from the recent data list
+    await recentData.delete();
 
     res.redirect('/');
 });
