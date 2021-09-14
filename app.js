@@ -1,3 +1,8 @@
+// Environment Variables
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 // Required Modules
 const express = require('express');
 const app = express();
@@ -13,7 +18,7 @@ const OldData = require('./models/oldData');
 // Replace <username> and <password> with the specified credentials
 
 // Mongoose Connection
-mongoose.connect('mongodb+srv://<username>:<password>@cluster0.k7pme.mongodb.net/distancingData?retryWrites=true&w=majority', { 
+mongoose.connect(process.env.MONGODB_URL, { 
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

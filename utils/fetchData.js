@@ -1,10 +1,15 @@
+// Environment Variables
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 // For fetching and exporting data
 const mongoose = require('mongoose');
 const OldData = require('../models/oldData');
 
 module.exports = async () => {
     // Mongoose Connection
-    mongoose.connect('mongodb+srv://<username>:<password>@cluster0.k7pme.mongodb.net/distancingData?retryWrites=true&w=majority', {
+    mongoose.connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })

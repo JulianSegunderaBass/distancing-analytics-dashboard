@@ -1,10 +1,15 @@
+// Environment Variables
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 // For creating dummy data (both old and new)
 const mongoose = require('mongoose');
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
 
 // Mongoose Connection
-mongoose.connect('mongodb+srv://<username>:<password>@cluster0.k7pme.mongodb.net/distancingData?retryWrites=true&w=majority', { 
+mongoose.connect(process.env.MONGODB_URL, { 
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
