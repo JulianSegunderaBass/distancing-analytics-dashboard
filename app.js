@@ -71,6 +71,6 @@ app.delete('/:recordID', async (req, res) => {
 
 // Setting port
 const port = process.env.PORT || 3000;
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log(`SERVING ON PORT ${port}`);
 });
