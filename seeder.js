@@ -9,7 +9,8 @@ const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
 
 // Mongoose Connection
-mongoose.connect(process.env.MONGODB_URL, { 
+const mongoConnection = process.env.MONGODB_URL || 'mongodb://localhost:27017/distancing-data';
+mongoose.connect(mongoConnection, { 
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

@@ -18,7 +18,8 @@ const OldData = require('./models/oldData');
 // Replace <username> and <password> with the specified credentials
 
 // Mongoose Connection
-mongoose.connect(process.env.MONGODB_URL, { 
+const mongoConnection = process.env.MONGODB_URL || 'mongodb://localhost:27017/distancing-data';
+mongoose.connect(mongoConnection, { 
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -69,6 +70,7 @@ app.delete('/:recordID', async (req, res) => {
 });
 
 // Setting port
+const port = process.env.PORT || 3000;
 app.listen(3000, () => {
-    console.log('SERVING ON PORT 3000');
+    console.log(`SERVING ON PORT ${port}`);
 });
