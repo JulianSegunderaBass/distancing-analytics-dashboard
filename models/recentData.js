@@ -2,7 +2,11 @@
 const mongoose = require('mongoose');
 
 const RecentDataSchema = new mongoose.Schema({
-    recordDate: String,
+    recordDate: {
+        month: Number,
+        day: Number,
+        year: Number
+    },
     violationCount: Number,
     headcount: Number,
 });

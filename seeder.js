@@ -28,11 +28,16 @@ const seedDB = async () => {
     await OldData.deleteMany({});
 
     // Creating recent data records
-    for (i = 0; i < 3; i++) {
-        const date = new Date();
-        const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+    for (i = 1; i <= 3; i++) {
+        let currentDate = new Date();
+        let previousDate = new Date();
+        previousDate.setDate(currentDate.getDate() - i);
         const recentData = new RecentData({
-            recordDate: `${month}-${day}-${year}`,
+            recordDate: {
+                month: previousDate.getMonth() + 1,
+                day: previousDate.getDate(),
+                year: previousDate.getFullYear()
+            },
             violationCount: Math.floor(Math.random() * 500),
             headcount: Math.floor(Math.random() * 1000)
         });
@@ -40,11 +45,16 @@ const seedDB = async () => {
     }
 
     // Creating old data records
-    for (i = 0; i < 15; i++) {
-        const date = new Date();
-        const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+    for (i = 1; i <= 31; i++) {
+        let currentDate = new Date();
+        let previousDate = new Date();
+        previousDate.setDate(currentDate.getDate() - i);
         const oldData = new OldData({
-            recordDate: `${month}-${day}-${year}`,
+            recordDate: {
+                month: previousDate.getMonth() + 1,
+                day: previousDate.getDate(),
+                year: previousDate.getFullYear()
+            },
             violationCount: Math.floor(Math.random() * 500),
             headcount: Math.floor(Math.random() * 1000)
         });
