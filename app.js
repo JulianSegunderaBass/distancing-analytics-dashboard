@@ -47,6 +47,29 @@ app.get('/', async (req, res) => {
     res.render('index', { recentData, oldData });
 });
 
+app.post('/', async (req, res) => {
+    // Getting the start and end date from the request
+    const { start, end } = req.body.dateFilter;
+    
+    // Slicing and parsing to get specific date values
+    const startDay = parseInt(start.slice(8));
+    const endDay = parseInt(end.slice(8));
+    const startMonth = parseInt(start.slice(5, 7));
+    const endMonth = parseInt(end.slice(5, 7));
+    const startYear = parseInt(start.slice(0, 4));
+    const endYear = parseInt(end.slice(0, 4));
+
+    const recentData = await RecentData.find({});
+
+    const oldData = await OldData.find({
+        "recordDate.day": { $gte: startDay, $lte: endDay },
+        "recordDate.month": { $gte: startMonth, $lte: endMonth },
+        "recordDate.year": { $gte: startYear, $lte: endYear }
+    });
+
+    res.render('index', { recentData, oldData });
+});
+
 app.post('/:recordID', async (req, res) => {
     const recentData = await RecentData.findById(req.params.recordID);
 
