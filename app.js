@@ -42,8 +42,8 @@ app.use(methodOverride('_method'));
 
 // !!! ROUTES !!!
 app.get('/', async (req, res) => {
-    const recentData = await RecentData.find({});
-    const oldData = await OldData.find({});
+    const recentData = await RecentData.find({}).sort({ recordDate: -1 });
+    const oldData = await OldData.find({}).sort({ recordDate: -1 });
     res.render('index', { recentData, oldData });
 });
 
@@ -58,10 +58,10 @@ app.post('/', async (req, res) => {
     endDate.setDate(endDate.getDate() + 1);
 
     // Filtering and fetching data
-    const recentData = await RecentData.find({});
+    const recentData = await RecentData.find({}).sort({ recordDate: -1 });
     const oldData = await OldData.find({
         recordDate: { $gte: startDate, $lte: endDate }
-    });
+    }).sort({ recordDate: -1 });
 
     res.render('index', { recentData, oldData });
 });
