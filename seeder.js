@@ -33,11 +33,7 @@ const seedDB = async () => {
         let previousDate = new Date();
         previousDate.setDate(currentDate.getDate() - i);
         const recentData = new RecentData({
-            recordDate: {
-                month: previousDate.getMonth() + 1,
-                day: previousDate.getDate(),
-                year: previousDate.getFullYear()
-            },
+            recordDate: previousDate,
             violationCount: Math.floor(Math.random() * 500),
             headcount: Math.floor(Math.random() * 1000)
         });
@@ -45,16 +41,12 @@ const seedDB = async () => {
     }
 
     // Creating old data records
-    for (i = 1; i <= 31; i++) {
+    for (i = 1; i <= 50; i++) {
         let currentDate = new Date();
         let previousDate = new Date();
         previousDate.setDate(currentDate.getDate() - i);
         const oldData = new OldData({
-            recordDate: {
-                month: previousDate.getMonth() + 1,
-                day: previousDate.getDate(),
-                year: previousDate.getFullYear()
-            },
+            recordDate: previousDate,
             violationCount: Math.floor(Math.random() * 500),
             headcount: Math.floor(Math.random() * 1000)
         });

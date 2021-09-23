@@ -59,7 +59,7 @@
                                 <!-- Looping through recent records -->
                                 <% for (let record of recentData) { %>
                                     <tr>
-                                        <th scope="row"><%= `${record.recordDate.month}-${record.recordDate.day}-${record.recordDate.year}` %></th>
+                                        <th scope="row"><%= record.recordDate %></th>
                                         <td><%= record.violationCount %></td>
                                         <td><%= record.headcount %></td>
                                         <td>
@@ -111,7 +111,7 @@
                                 <!-- Looping through old records -->
                                 <% for (let record of oldData) { %>
                                     <tr>
-                                        <th scope="row"><%= `${record.recordDate.month}-${record.recordDate.day}-${record.recordDate.year}` %></th>
+                                        <th scope="row"><%= record.recordDate %></th>
                                         <td><%= record.violationCount %></td>
                                         <td><%= record.headcount %></td>
                                         <td>
@@ -154,9 +154,9 @@
 
         // Pushing record data to arrays
         for (let record of workableData) {
-            dateArray.push(`${record.recordDate.month}-${record.recordDate.day}-${record.recordDate.year}`);
-            violationArray.push(record.violationCount);
-            headcountArray.push(record.headcount);
+            dateArray.unshift(record.recordDate.slice(0, 10));
+            violationArray.unshift(record.violationCount);
+            headcountArray.unshift(record.headcount);
         }
 
         // For displaying charts

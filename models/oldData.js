@@ -2,11 +2,7 @@
 const mongoose = require('mongoose');
 
 const OldDataSchema = new mongoose.Schema({
-    recordDate: {
-        month: Number,
-        day: Number,
-        year: Number
-    },
+    recordDate: Date,
     violationCount: Number,
     headcount: Number,
 });
