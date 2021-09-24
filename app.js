@@ -9,6 +9,7 @@ const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
+const helper = require('./javascripts/helper');
 // Models
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
@@ -44,7 +45,7 @@ app.use(methodOverride('_method'));
 app.get('/', async (req, res) => {
     const recentData = await RecentData.find({}).sort({ recordDate: -1 });
     const oldData = await OldData.find({}).sort({ recordDate: -1 });
-    res.render('index', { recentData, oldData });
+    res.render('index', { recentData, oldData, helper });
 });
 
 app.post('/', async (req, res) => {
@@ -63,7 +64,7 @@ app.post('/', async (req, res) => {
         recordDate: { $gte: startDate, $lte: endDate }
     }).sort({ recordDate: -1 });
 
-    res.render('index', { recentData, oldData });
+    res.render('index', { recentData, oldData, helper });
 });
 
 app.post('/:recordID', async (req, res) => {

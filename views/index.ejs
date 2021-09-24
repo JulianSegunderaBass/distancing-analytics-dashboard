@@ -34,8 +34,10 @@
 
 <body>
     <div class="container-fluid bg-secondary bg-opacity-25 p-5">
-        <h2>Distancing Data</h2>
-        <h4>View today's data, or previous records.</h4>
+        <div class="container">
+            <h2>Distancing Data</h2>
+            <h4>View today's data, or previous records.</h4>
+        </div>
     </div>
     <div class="container mb-5">
         <div class="mt-3">
@@ -59,7 +61,7 @@
                                 <!-- Looping through recent records -->
                                 <% for (let record of recentData) { %>
                                     <tr>
-                                        <th scope="row"><%= record.recordDate %></th>
+                                        <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
                                         <td><%= record.violationCount %></td>
                                         <td><%= record.headcount %></td>
                                         <td>
@@ -112,7 +114,7 @@
                                 <!-- Looping through old records -->
                                 <% for (let record of oldData) { %>
                                     <tr>
-                                        <th scope="row"><%= record.recordDate %></th>
+                                        <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
                                         <td><%= record.violationCount %></td>
                                         <td><%= record.headcount %></td>
                                         <td>
