@@ -41,7 +41,7 @@ const seedDB = async () => {
     }
 
     // Creating old data records
-    for (i = 1; i <= 50; i++) {
+    for (i = 1; i <= 6; i++) {
         let currentDate = new Date();
         let previousDate = new Date();
         previousDate.setDate(currentDate.getDate() - i);

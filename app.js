@@ -48,7 +48,10 @@ app.get('/', async (req, res) => {
     const oldData = await OldData.find({}).sort({ recordDate: -1 });
     // Default null values for date filters
     const [startDate, endDate] = [null, null];
-    res.render('index', { recentData, oldData, helper, startDate, endDate });
+    // Getting aggregated values
+    const totalViolations = helper.aggregateViolations(oldData);
+    const totalHeadcount = helper.aggregateHeadcount(oldData);
+    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount });
 });
 
 app.post('/', async (req, res) => {
@@ -67,7 +70,11 @@ app.post('/', async (req, res) => {
         recordDate: { $gte: startDate, $lte: endDate }
     }).sort({ recordDate: -1 });
 
-    res.render('index', { recentData, oldData, helper, startDate, endDate });
+    // Getting aggregated values
+    const totalViolations = helper.aggregateViolations(oldData);
+    const totalHeadcount = helper.aggregateHeadcount(oldData);
+
+    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount });
 });
 
 app.post('/:recordID', async (req, res) => {

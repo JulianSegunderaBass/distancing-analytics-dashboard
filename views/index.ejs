@@ -147,6 +147,27 @@
                 <div class="col-8">
                     <!-- For Chart -->
                     <canvas id="barChart"></canvas>
+                    <!-- For aggregated statistics -->
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="card">
+                                <h5 class="card-header text-center"><i class="far fa-handshake"></i> Total Violations</h5>
+                                <div class="card-body">
+                                    <h6 class="card-title text-muted text-center">Aggregated violations for period</h6>
+                                    <h3 class="text-center"><%= totalViolations %> </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <h5 class="card-header text-center"><i class="fas fa-users"></i> Total Headcount</h5>
+                                <div class="card-body">
+                                    <h6 class="card-title text-muted text-center">Aggregated headcount for period</h6>
+                                    <h3 class="text-center"><%= totalHeadcount %> </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
