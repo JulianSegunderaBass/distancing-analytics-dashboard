@@ -46,7 +46,9 @@ app.use(methodOverride('_method'));
 app.get('/', async (req, res) => {
     const recentData = await RecentData.find({}).sort({ recordDate: -1 });
     const oldData = await OldData.find({}).sort({ recordDate: -1 });
-    res.render('index', { recentData, oldData, helper });
+    // Default null values for date filters
+    const [startDate, endDate] = [null, null];
+    res.render('index', { recentData, oldData, helper, startDate, endDate });
 });
 
 app.post('/', async (req, res) => {
@@ -65,7 +67,7 @@ app.post('/', async (req, res) => {
         recordDate: { $gte: startDate, $lte: endDate }
     }).sort({ recordDate: -1 });
 
-    res.render('index', { recentData, oldData, helper });
+    res.render('index', { recentData, oldData, helper, startDate, endDate });
 });
 
 app.post('/:recordID', async (req, res) => {
