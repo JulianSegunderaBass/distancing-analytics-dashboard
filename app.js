@@ -51,7 +51,11 @@ app.get('/', async (req, res) => {
     // Getting aggregated values
     const totalViolations = helper.aggregateViolations(oldData);
     const totalHeadcount = helper.aggregateHeadcount(oldData);
-    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount });
+    // Getting highest values
+    const topViolations = await OldData.find({}).sort({ violationCount: -1 }).limit(3);
+    const topHeadcounts = await OldData.find({}).sort({ headcount: -1 }).limit(3);
+
+    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/', async (req, res) => {
@@ -73,8 +77,17 @@ app.post('/', async (req, res) => {
     // Getting aggregated values
     const totalViolations = helper.aggregateViolations(oldData);
     const totalHeadcount = helper.aggregateHeadcount(oldData);
+    
+    // Getting highest values
+    const topViolations = await OldData.find({
+        recordDate: { $gte: startDate, $lte: endDate }
+    }).sort({ violationCount: -1 }).limit(3);
 
-    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount });
+    const topHeadcounts = await OldData.find({
+        recordDate: { $gte: startDate, $lte: endDate }
+    }).sort({ headcount: -1 }).limit(3);
+
+    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/:recordID', async (req, res) => {

@@ -148,7 +148,7 @@
                     <!-- For Chart -->
                     <canvas id="barChart"></canvas>
                     <!-- For aggregated statistics -->
-                    <div class="row mt-3">
+                    <div class="row mt-3 gy-3">
                         <div class="col-6">
                             <div class="card">
                                 <h5 class="card-header text-center"><i class="far fa-handshake"></i> Total Violations</h5>
@@ -164,6 +164,30 @@
                                 <div class="card-body">
                                     <h6 class="card-title text-muted text-center">Aggregated headcount for period</h6>
                                     <h3 class="text-center"><%= totalHeadcount %> </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <h5 class="card-header text-center"><i class="fas fa-sort-amount-up"></i> Highest Violation Counts</h5>
+                                <div class="card-body">
+                                    <div class="container w-75">
+                                        <% for (let record of topViolations) { %>
+                                            <h6 class="card-title"><%= helper.sliceDateString(record.recordDate) %> <i class="fas fa-long-arrow-alt-right"></i> <span class="badge bg-danger"><%= record.violationCount %></span></h6>
+                                        <% } %> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <h5 class="card-header text-center"><i class="fas fa-sort-amount-up"></i> Highest Headcounts</h5>
+                                <div class="card-body">
+                                    <div class="container w-75">
+                                        <% for (let record of topHeadcounts) { %>
+                                            <h6 class="card-title"><%= helper.sliceDateString(record.recordDate) %> <i class="fas fa-long-arrow-alt-right"></i> <span class="badge bg-warning"><%= record.headcount %></span></h6>
+                                        <% } %> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
