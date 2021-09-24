@@ -59,22 +59,29 @@
                             </thead>
                             <tbody>
                                 <!-- Looping through recent records -->
-                                <% for (let record of recentData) { %>
+                                <% if (recentData.length === 0) { %>
                                     <tr>
-                                        <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
-                                        <td><%= record.violationCount %></td>
-                                        <td><%= record.headcount %></td>
-                                        <td>
-                                            <form action="/<%= record._id %> " method="POST">
-                                                <button class="btn btn-success"><i class="fas fa-file-archive"></i></button>
-                                            </form>
-                                        </td>
+                                        <th scope="col" colspan="4" class="text-center text-muted">No Recent Records</th>
                                     </tr>
-                                <% } %>
+                                <% } else { %>  
+                                    <% for (let record of recentData) { %>
+                                        <tr>
+                                            <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
+                                            <td><%= record.violationCount %></td>
+                                            <td><%= record.headcount %></td>
+                                            <td>
+                                                <form action="/<%= record._id %> " method="POST">
+                                                    <button class="btn btn-success"><i class="fas fa-file-archive"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                <% } %> 
                             </tbody>
                         </table>
                     </div>
                     <!-- For filtering dates -->
+                    <hr>
                     <h5 class="mt-3">Filter older records</h5>
                     <form action="/" class="mt-3" method="POST">
                         <div class="row gap-2">
@@ -112,18 +119,24 @@
                             </thead>
                             <tbody>
                                 <!-- Looping through old records -->
-                                <% for (let record of oldData) { %>
+                                <% if (oldData.length === 0) { %>
                                     <tr>
-                                        <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
-                                        <td><%= record.violationCount %></td>
-                                        <td><%= record.headcount %></td>
-                                        <td>
-                                            <form action="/<%= record._id %>?_method=DELETE" method="POST">
-                                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                            </form>
-                                        </td>
+                                        <th scope="col" colspan="4" class="text-center text-muted">No Old Records</th>
                                     </tr>
-                                <% } %>
+                                <% } else { %> 
+                                    <% for (let record of oldData) { %>
+                                        <tr>
+                                            <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
+                                            <td><%= record.violationCount %></td>
+                                            <td><%= record.headcount %></td>
+                                            <td>
+                                                <form action="/<%= record._id %>?_method=DELETE" method="POST">
+                                                    <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                <% } %> 
                             </tbody>
                         </table>
                     </div>

@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const flash = require('connect-flash');
 const path = require('path');
 const methodOverride = require('method-override');
 const helper = require('./javascripts/helper');
@@ -88,6 +89,11 @@ app.delete('/:recordID', async (req, res) => {
     const record = await OldData.findByIdAndDelete(req.params.recordID);
     res.redirect('/');
 });
+
+// Error handler
+// app.use((err, req, res, next) => {
+//     res.status(500).send(err);
+// });
 
 // Setting port
 const port = process.env.PORT || 3000;
