@@ -11,6 +11,29 @@
     <title>Distancing Analytics</title>
 
     <style>
+        /* Variables */
+        :root {
+            --background-light: #ffffff;
+            --text-light: #000000;
+            --accent1-light: #d9d9d9;
+            --shadow-light: #000000;
+            --table-bg-light: #d9d9d9;
+            --card-header-light: #d9d9d9;
+            --card-body-light: #ffffff;
+            --graph-bg-light: #d9d9d9;
+            --theme-btn-light: #000;
+
+            --background-dark: #212529;
+            --text-dark: #dee2e6;
+            --accent1-dark: #343a40;
+            --shadow-dark: #adb5bd;
+            --table-bg-dark: #343a40;
+            --card-header-dark: #343a40;
+            --card-body-dark: #495057;
+            --graph-bg-dark: #343a40;
+            --theme-btn-dark: #ffffff;
+        }
+
         ::-webkit-scrollbar {
             width: 0.5rem;
         }
@@ -29,24 +52,120 @@
         .old-records-height {
             height: 40vh;
         }
+
+        /* Color classes */
+        #theme-btn {
+            background-color: var(--theme-btn);
+            color: var(--accent1);
+            border-radius: 0.2rem;
+            width: 1.7rem;
+            height: 1.7rem;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .main-background {
+            background-color: var(--background);
+        }
+        .colored-text {
+            color: var(--text);
+        }
+        .accent-background {
+            background-color: var(--accent1);
+        }
+        .add-shadow {
+            box-shadow: 5px 10px --shadow;
+        }
+        .table-background {
+            background-color: var(--table-bg);
+        }
+        .card-header-bg {
+            background-color: var(--card-header);
+        }
+        .card-body-bg {
+            background-color: var(--card-body);
+        }
+        .graph-background {
+            background-color: var(--graph-bg);
+        }
+        .main-background, .colored-text, .accent-background, .add-shadow, .table-background, .card-header-bg, .card-body-bg, .graph-background, #theme-btn {
+            transition: background-color 0.5s ease, color 0.7s ease, box-shadow 0.7s ease;
+        }
+
+        /* For swapping theme */
+        @media(prefers-color-scheme: dark) {
+            :root {
+                --background: var(--background-dark);
+                --text: var(--text-dark);
+                --accent1: var(--accent1-dark);
+                --shadow: var(--shadow-dark);
+                --table-bg: var(--table-bg-dark);
+                --card-header: var(--card-header-dark);
+                --card-body: var(--card-body-dark);
+                --graph-bg: var(--graph-bg-dark);
+                --theme-btn: var(--theme-btn-dark);
+            }
+        }
+
+        @media(prefers-color-scheme: light) {
+            :root {
+                --background: var(--background-light);
+                --text: var(--text-light);
+                --accent1: var(--accent1-light);
+                --shadow: var(--shadow-light);
+                --table-bg: var(--table-bg-light);
+                --card-header: var(--card-header-light);
+                --card-body: var(--card-body-light);
+                --graph-bg: var(--graph-bg-light);
+                --theme-btn: var(--theme-btn-light);
+            }
+        }
+
+        [color-scheme="dark"] {
+            --background: var(--background-dark);
+            --text: var(--text-dark);
+            --accent1: var(--accent1-dark);
+            --shadow: var(--shadow-dark);
+            --table-bg: var(--table-bg-dark);
+            --card-header: var(--card-header-dark);
+            --card-body: var(--card-body-dark);
+            --graph-bg: var(--graph-bg-dark);
+            --theme-btn: var(--theme-btn-dark);
+        }
+
+        [color-scheme="light"] {
+            --background: var(--background-light);
+            --text: var(--text-light);
+            --accent1: var(--accent1-light);
+            --shadow: var(--shadow-light);
+            --table-bg: var(--table-bg-light);
+            --card-header: var(--card-header-light);
+            --card-body: var(--card-body-light);
+            --graph-bg: var(--graph-bg-light);
+            --theme-btn: var(--theme-btn-light);
+        }
     </style>
 </head>
 
-<body>
-    <div class="container-fluid bg-secondary bg-opacity-25 p-5">
+<body class="main-background">
+    <div class="container-fluid accent-background colored-text bg-opacity-25 p-5">
         <div class="container">
             <h2><i class="far fa-chart-bar"></i> Social Distancing Dashboard</h2>
             <h4>See your uploaded distancing data here and view older records.</h4>
+            <!-- Theme toggle button -->
+            <div id="theme-btn" role="switch" aria-label="light/dark mode">
+                <i class="far fa-lightbulb"></i>
+            </div>
         </div>
     </div>
-    <div class="container mb-5">
+    <div class="container colored-text mb-5">
         <div class="mt-3">
             <div class="row">
                 <div class="col-4">
                     <!-- Recent data -->
                     <div class="overflow-auto d-block recent-records-height mt-3">
-                        <table class="table table-light table-striped">
-                            <thead>
+                        <table class="table colored-text">
+                            <thead class="table-background">
                                 <tr>
                                     <th scope="col" colspan="4" class="text-center">Recent Records</th>
                                 </tr>
@@ -108,8 +227,8 @@
                     </form>
                     <!-- Old data table -->
                     <div class="overflow-auto d-block old-records-height mt-3">
-                        <table class="table table-light table-striped">
-                            <thead>
+                        <table class="table colored-text">
+                            <thead class="table-background">
                                 <tr>
                                     <th scope="col" colspan="4" class="text-center">Older Records</th>
                                 </tr>
@@ -146,31 +265,31 @@
                 </div>
                 <div class="col-8">
                     <!-- For Chart -->
-                    <canvas id="barChart"></canvas>
+                    <canvas class="graph-background colored-text rounded" id="barChart"></canvas>
                     <!-- For aggregated statistics -->
                     <div class="row mt-3 gy-3">
                         <div class="col-6">
                             <div class="card">
-                                <h5 class="card-header text-center"><i class="far fa-handshake"></i> Total Violations</h5>
-                                <div class="card-body">
-                                    <h6 class="card-title text-muted text-center">Aggregated violations for period</h6>
+                                <h5 class="card-header card-header-bg text-center"><i class="far fa-handshake"></i> Total Violations</h5>
+                                <div class="card-body card-body-bg">
+                                    <h6 class="card-title text-center">Aggregated violations for period</h6>
                                     <h3 class="text-center"><%= totalViolations %> </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="card">
-                                <h5 class="card-header text-center"><i class="fas fa-users"></i> Total Headcount</h5>
-                                <div class="card-body">
-                                    <h6 class="card-title text-muted text-center">Aggregated headcount for period</h6>
+                                <h5 class="card-header card-header-bg text-center"><i class="fas fa-users"></i> Total Headcount</h5>
+                                <div class="card-body card-body-bg">
+                                    <h6 class="card-title text-center">Aggregated headcount for period</h6>
                                     <h3 class="text-center"><%= totalHeadcount %> </h3>
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="card">
-                                <h5 class="card-header text-center"><i class="fas fa-sort-amount-up"></i> Highest Violation Counts</h5>
-                                <div class="card-body">
+                                <h5 class="card-header card-header-bg text-center"><i class="fas fa-sort-amount-up"></i> Highest Violation Counts</h5>
+                                <div class="card-body card-body-bg">
                                     <div class="container w-75">
                                         <% for (let record of topViolations) { %>
                                             <h6 class="card-title"><%= helper.sliceDateString(record.recordDate) %> <i class="fas fa-long-arrow-alt-right"></i> <span class="badge bg-danger"><%= record.violationCount %></span></h6>
@@ -181,8 +300,8 @@
                         </div>
                         <div class="col-6">
                             <div class="card">
-                                <h5 class="card-header text-center"><i class="fas fa-sort-amount-up"></i> Highest Headcounts</h5>
-                                <div class="card-body">
+                                <h5 class="card-header card-header-bg text-center"><i class="fas fa-sort-amount-up"></i> Highest Headcounts</h5>
+                                <div class="card-body card-body-bg">
                                     <div class="container w-75">
                                         <% for (let record of topHeadcounts) { %>
                                             <h6 class="card-title"><%= helper.sliceDateString(record.recordDate) %> <i class="fas fa-long-arrow-alt-right"></i> <span class="badge bg-warning"><%= record.headcount %></span></h6>
@@ -196,7 +315,7 @@
             </div>
         </div>
     </div>
-    <footer class="footer bg-secondary bg-opacity-25 py-3 mt-auto">
+    <footer class="footer accent-background colored-text bg-opacity-25 py-3 mt-auto">
         <div class="container">
             <span class="text-muted"><i class="fas fa-terminal"></i> Developed in partnership with Asia Pacific College, Philippines</span>
         </div>
@@ -213,6 +332,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 
     <script>
+        // For toggling theme
+        const themeBtn = document.getElementById('theme-btn');
+        themeBtn.addEventListener('click', () => {
+            let theme = getCurrentTheme();
+            if (theme === 'dark') {
+                theme = 'light';
+            } else {
+                theme = 'dark';
+            }
+            localStorage.setItem('dashboard.theme', `${theme}`);
+            loadTheme(theme);
+        });
+
+        const getCurrentTheme = () => {
+            let theme = window.matchMedia('(prefers-color-scheme: dark')
+            .matches ? 'dark' : 'light';
+            localStorage.getItem('dashboard.theme') ? theme = localStorage.getItem('dashboard.theme') : null;
+            return theme;
+        }
+
+        const loadTheme = (theme) => {
+            const root = document.querySelector(':root');
+            root.setAttribute('color-scheme', `${theme}`);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadTheme(getCurrentTheme());
+        });
+        
         // Parsing to access EJS data
         var oldData = '<%- JSON.stringify(oldData) %>';
         var workableData = JSON.parse(oldData);
@@ -231,7 +379,7 @@
         // For displaying charts
         const barChart = document.getElementById('barChart').getContext('2d');
 
-        Chart.defaults.global.defaultFontColor = '#000';
+        Chart.defaults.global.defaultFontColor = `${getCurrentTheme() === 'dark' ? '#ffffff' : '#000'}`;
         const barChartDisplay = new Chart(barChart, {
             type: 'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
             data: {
@@ -276,6 +424,7 @@
                 }
             }
         });
+
     </script>
 </body>
 

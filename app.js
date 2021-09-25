@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const path = require('path');
 const methodOverride = require('method-override');
-const helper = require('./javascripts/helper');
+const helper = require('./public/javascripts/helper');
 // Models
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
@@ -37,7 +37,7 @@ app.set('view engine', 'ejs');
 // Accessing EJS views from the views directory
 app.set('views', path.join(__dirname, 'views'));
 // Accessing static assets
-app.use(express.static(path.join(__dirname, 'javascripts')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 // For other methods
 app.use(methodOverride('_method'));
