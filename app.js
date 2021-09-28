@@ -63,7 +63,7 @@ app.get('/', async (req, res) => {
     app.locals.topViolations = topViolations;
     app.locals.topHeadcounts = topHeadcounts
 
-    res.render('index', { recentData, oldData, helper, pdfDownload, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.get('/reportView', async (req, res) => {
@@ -75,7 +75,7 @@ app.get('/reportView', async (req, res) => {
     const topViolations = app.locals.topViolations;
     const topHeadcounts = app.locals.topHeadcounts;
 
-    res.render('reportView', { helper, reportRecords, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    res.render('reportView', { helper, pdfDownload, reportRecords, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/', async (req, res) => {
@@ -114,7 +114,7 @@ app.post('/', async (req, res) => {
     app.locals.topViolations = topViolations;
     app.locals.topHeadcounts = topHeadcounts;
 
-    res.render('index', { recentData, oldData, helper, pdfDownload, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/:recordID', async (req, res) => {

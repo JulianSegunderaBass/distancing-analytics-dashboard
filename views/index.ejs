@@ -235,13 +235,6 @@
         var oldData = '<%- JSON.stringify(oldData) %>';
         var workableData = JSON.parse(oldData);
 
-        // Saving to local storage for reporting
-        window.localStorage.setItem('reportRecords', oldData);
-        window.localStorage.setItem('totalViolations', '<%- totalViolations %>');
-        window.localStorage.setItem('totalHeadcount', '<%- totalHeadcount %>');
-        window.localStorage.setItem('topViolations', '<%- JSON.stringify(topViolations) %>');
-        window.localStorage.setItem('topHeadcounts', '<%- JSON.stringify(topHeadcounts) %>');
-
         // Defining arrays for the chart
         let dateArray = [];
         let violationArray = [];

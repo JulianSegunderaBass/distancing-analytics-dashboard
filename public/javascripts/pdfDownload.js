@@ -7,6 +7,7 @@ module.exports.savePDF = async () => {
     await page.goto('https://distancing-analytics-dashboard.herokuapp.com/', {
       waitUntil: 'networkidle2',
     });
+    await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: './'});
     await page.pdf({ 
         path: 'report.pdf', 
         landscape: true,
