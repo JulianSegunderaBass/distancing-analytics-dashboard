@@ -23,6 +23,9 @@
             <div id="theme-btn" role="switch" aria-label="light/dark mode">
                 <i class="far fa-lightbulb"></i>
             </div>
+            <form action="/reportView" class="mt-3" method="GET">
+                <button class="btn btn-primary">Report View</button>
+            </form>
         </div>
     </div>
     <div class="container colored-text mb-5">
@@ -231,6 +234,14 @@
         // Parsing to access EJS data
         var oldData = '<%- JSON.stringify(oldData) %>';
         var workableData = JSON.parse(oldData);
+
+        // Saving to local storage for reporting
+        window.localStorage.setItem('reportRecords', oldData);
+        window.localStorage.setItem('totalViolations', '<%- totalViolations %>');
+        window.localStorage.setItem('totalHeadcount', '<%- totalHeadcount %>');
+        window.localStorage.setItem('topViolations', '<%- JSON.stringify(topViolations) %>');
+        window.localStorage.setItem('topHeadcounts', '<%- JSON.stringify(topHeadcounts) %>');
+
         // Defining arrays for the chart
         let dateArray = [];
         let violationArray = [];

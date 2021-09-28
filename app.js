@@ -11,6 +11,7 @@ const flash = require('connect-flash');
 const path = require('path');
 const methodOverride = require('method-override');
 const helper = require('./public/javascripts/helper');
+const pdfDownload = require('./public/javascripts/pdfDownload');
 // Models
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
@@ -55,7 +56,26 @@ app.get('/', async (req, res) => {
     const topViolations = await OldData.find({}).sort({ violationCount: -1 }).limit(3);
     const topHeadcounts = await OldData.find({}).sort({ headcount: -1 }).limit(3);
 
-    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    // Saving to local app storage
+    app.locals.reportRecords = oldData;
+    app.locals.totalViolations = totalViolations;
+    app.locals.totalHeadcount = totalHeadcount;
+    app.locals.topViolations = topViolations;
+    app.locals.topHeadcounts = topHeadcounts
+
+    res.render('index', { recentData, oldData, helper, pdfDownload, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+});
+
+app.get('/reportView', async (req, res) => {
+
+    // Retrieving local app storage
+    const reportRecords = app.locals.reportRecords;
+    const totalViolations = app.locals.totalViolations;
+    const totalHeadcount = app.locals.totalHeadcount;
+    const topViolations = app.locals.topViolations;
+    const topHeadcounts = app.locals.topHeadcounts;
+
+    res.render('reportView', { helper, reportRecords, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/', async (req, res) => {
@@ -87,7 +107,14 @@ app.post('/', async (req, res) => {
         recordDate: { $gte: startDate, $lte: endDate }
     }).sort({ headcount: -1 }).limit(3);
 
-    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    // Saving to local app storage
+    app.locals.reportRecords = oldData;
+    app.locals.totalViolations = totalViolations;
+    app.locals.totalHeadcount = totalHeadcount;
+    app.locals.topViolations = topViolations;
+    app.locals.topHeadcounts = topHeadcounts;
+
+    res.render('index', { recentData, oldData, helper, pdfDownload, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/:recordID', async (req, res) => {
