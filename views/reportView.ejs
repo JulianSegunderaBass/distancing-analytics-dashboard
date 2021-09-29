@@ -10,15 +10,31 @@
     <title>Report</title>
 </head>
 <body>
-    <div class="container mb-3">
-        <form action="/" class="mt-3" method="GET">
-            <button class="btn btn-primary">Back to Home</button>
-        </form>
-        <button class="btn btn-success" id="download-pdf">Download Report</button>
+    <div class="container-fluid bg-secondary bg-opacity-25 p-5">
+        <div class="container">
+            <% if (startDate && endDate) { %>
+                <h3><i class="far fa-clock"></i> Report for period of <i><%= helper.sliceDateString(startDate) %> <i class="fas fa-long-arrow-alt-right"></i> <%= helper.sliceDateString(endDate) %></i></h3>
+            <% } else { %>
+                <h3><i class="far fa-clock"></i> Report for all existing records</h3>
+            <% } %>
+            <div class="d-flex mt-1 gap-2">
+                <form action="/" method="GET">
+                    <button class="btn btn-primary btn-sm">Back to Home</button>
+                </form>
+                <button class="btn btn-success btn-sm" id="download-pdf">Download Report</button>
+            </div>
+        </div>
     </div>
-    <div class="container mb-3" id="report-content">
+    <div class="container mb-3 mt-3" id="report-content">
         <!-- For Chart -->
         <canvas id="barChart"></canvas>
+        <div class="d-flex justify-content-center mt-3">
+            <% if (startDate && endDate) { %>
+                <h4><i class="far fa-clock"></i> Report for period of <i><%= helper.sliceDateString(startDate) %> <i class="fas fa-long-arrow-alt-right"></i> <%= helper.sliceDateString(endDate) %></i></h4>
+            <% } else { %>
+                <h4><i class="far fa-clock"></i> All records shown</h4>
+            <% } %>
+        </div>
         <!-- For aggregated statistics -->
         <div class="row mt-3 gy-3">
             <div class="col-3">
@@ -65,6 +81,12 @@
             </div>
         </div>
     </div>
+    <!-- Footer -->
+    <footer class="footer bg-secondary bg-opacity-25 py-3 mt-auto">
+        <div class="container">
+            <span class="text-muted"><i class="fas fa-terminal"></i> Developed in partnership with Asia Pacific College, Philippines</span>
+        </div>
+    </footer>
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"

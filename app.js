@@ -60,7 +60,9 @@ app.get('/', async (req, res) => {
     app.locals.totalViolations = totalViolations;
     app.locals.totalHeadcount = totalHeadcount;
     app.locals.topViolations = topViolations;
-    app.locals.topHeadcounts = topHeadcounts
+    app.locals.topHeadcounts = topHeadcounts;
+    app.locals.startDate = startDate;
+    app.locals.endDate = endDate;
 
     res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
@@ -73,8 +75,10 @@ app.get('/reportView', async (req, res) => {
     const totalHeadcount = app.locals.totalHeadcount;
     const topViolations = app.locals.topViolations;
     const topHeadcounts = app.locals.topHeadcounts;
+    const startDate = app.locals.startDate;
+    const endDate = app.locals.endDate;
 
-    res.render('reportView', { helper, reportRecords, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    res.render('reportView', { helper, reportRecords, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/', async (req, res) => {
@@ -112,6 +116,8 @@ app.post('/', async (req, res) => {
     app.locals.totalHeadcount = totalHeadcount;
     app.locals.topViolations = topViolations;
     app.locals.topHeadcounts = topHeadcounts;
+    app.locals.startDate = startDate;
+    app.locals.endDate = endDate;
 
     res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });

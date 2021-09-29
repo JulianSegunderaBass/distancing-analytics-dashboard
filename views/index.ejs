@@ -23,9 +23,6 @@
             <div id="theme-btn" role="switch" aria-label="light/dark mode">
                 <i class="far fa-lightbulb"></i>
             </div>
-            <form action="/reportView" class="mt-3" method="GET">
-                <button class="btn btn-primary">Report View</button>
-            </form>
         </div>
     </div>
     <div class="container colored-text mb-5">
@@ -74,6 +71,8 @@
                     <h5 class="mt-3">Filter older records</h5>
                     <% if (startDate && endDate) { %>
                         <h6 class="text-muted"><i class="far fa-clock"></i> <%= helper.sliceDateString(startDate) %> <i class="fas fa-long-arrow-alt-right"></i> <%= helper.sliceDateString(endDate) %></h6>
+                    <% } else { %>
+                        <h6 class="text-muted"><i class="far fa-clock"></i> All records shown</h6>
                     <% } %> 
                     <form action="/" class="mt-3" method="POST">
                         <div class="row gap-2">
@@ -181,6 +180,11 @@
                             </div>
                         </div>
                     </div>
+                    <form action="/reportView" class="mt-3" method="GET">
+                        <div class="d-grid gap-2 col-4 mx-auto">
+                            <button class="btn btn-info">View Report</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -250,7 +254,7 @@
         // For displaying charts
         const barChart = document.getElementById('barChart').getContext('2d');
 
-        Chart.defaults.global.defaultFontColor = `${getCurrentTheme() === 'dark' ? '#ffffff' : '#000'}`;
+        Chart.defaults.global.defaultFontColor = '#6A6A6A ';
         const barChartDisplay = new Chart(barChart, {
             type: 'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
             data: {
