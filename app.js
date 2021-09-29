@@ -11,7 +11,6 @@ const flash = require('connect-flash');
 const path = require('path');
 const methodOverride = require('method-override');
 const helper = require('./public/javascripts/helper');
-const pdfDownload = require('./public/javascripts/pdfDownload');
 // Models
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
@@ -75,7 +74,7 @@ app.get('/reportView', async (req, res) => {
     const topViolations = app.locals.topViolations;
     const topHeadcounts = app.locals.topHeadcounts;
 
-    res.render('reportView', { helper, pdfDownload, reportRecords, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    res.render('reportView', { helper, reportRecords, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
 app.post('/', async (req, res) => {

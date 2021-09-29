@@ -16,7 +16,6 @@
     "ejs-mate": "^3.0.0",
     "express": "^4.17.1",
     "method-override": "^3.0.0",
-    "mongoose": "^6.0.5",
-    "puppeteer": "^10.4.0"
+    "mongoose": "^6.0.5"
   }
 }

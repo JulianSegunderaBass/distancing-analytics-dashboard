@@ -14,6 +14,9 @@
         <form action="/" class="mt-3" method="GET">
             <button class="btn btn-primary">Back to Home</button>
         </form>
+        <button class="btn btn-success" id="download-pdf">Download Report</button>
+    </div>
+    <div class="container mb-3" id="report-content">
         <!-- For Chart -->
         <canvas id="barChart"></canvas>
         <!-- For aggregated statistics -->
@@ -72,6 +75,13 @@
         crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.js" 
+        integrity="sha512-vNrhFyg0jANLJzCuvgtlfTuPR21gf5Uq1uuSs/EcBfVOz6oAHmjqfyPoB5rc9iWGSnVE41iuQU4jmpXMyhBrsw==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer"></script>
+
+    <script src="/javascripts/pdfDownload.js"></script>
 
     <script>
         // Parsing to access local storage
