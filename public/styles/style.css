@@ -308,3 +308,35 @@ tbody tr:nth-child(even) {
 ::-webkit-scrollbar-thumb:hover {
     background: #474747;
 }
+
+/* Media Queries */
+@media only screen and (max-width: 1150px) {
+    .analytics {
+        flex-direction: column;
+    }
+    .chart-container {
+        height: 450px;
+    }
+    .card-header, .card-subtitle {
+        text-align: center;
+    }
+    .data-tables {
+        flex-direction: column;
+        height: 600px;
+    }
+}
+
+@media only screen and (max-width: 950px) {
+    .top-bar {
+        flex-direction: column;
+        gap: 24px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .container {
+        border: none;
+        border-radius: 0;
+        width: 100%;;
+    }
+}
