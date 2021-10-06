@@ -333,10 +333,41 @@ tbody tr:nth-child(even) {
     }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: start;
+    }
     .container {
         border: none;
         border-radius: 0;
-        width: 100%;;
+        width: 100%;
+    }
+    .filter-forms {
+        width: 100%;
+        justify-content: start;
+    }
+    .filter-forms form {
+        padding: 0;
+        margin: 0;
+    }
+    .filter-forms label {
+        display: none;
+    }
+    .filter-forms form input {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 2px;
+        padding-left: 4px;
+    }
+    .filter-forms form:first-child {
+        width: 90%;
+        justify-content: start;
+    }
+    .filter-forms form:last-child {
+        justify-content: start;
+    }
+    thead tr:nth-child(1) th {
+        text-align: start;
     }
 }
