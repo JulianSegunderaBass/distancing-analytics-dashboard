@@ -67,20 +67,6 @@ app.get('/', async (req, res) => {
     res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
 });
 
-app.get('/reportView', async (req, res) => {
-
-    // Retrieving local app storage
-    const reportRecords = app.locals.reportRecords;
-    const totalViolations = app.locals.totalViolations;
-    const totalHeadcount = app.locals.totalHeadcount;
-    const topViolations = app.locals.topViolations;
-    const topHeadcounts = app.locals.topHeadcounts;
-    const startDate = app.locals.startDate;
-    const endDate = app.locals.endDate;
-
-    res.render('reportView', { helper, reportRecords, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
-});
-
 app.post('/', async (req, res) => {
     // Getting the start and end date from the request
     const { start, end } = req.body.dateFilter;

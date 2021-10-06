@@ -1,241 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <title>Distancing Analytics</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/style.css">
-
+    <title>Distancing Analytics Dashboard</title>
 </head>
-
-<body class="main-background">
-    <div class="container-fluid accent-background colored-text bg-opacity-25 p-5">
-        <div class="container">
-            <h2><i class="far fa-chart-bar"></i> Social Distancing Dashboard</h2>
-            <h4>See your uploaded distancing data here and view older records.</h4>
-            <!-- Theme toggle button -->
-            <div id="theme-btn" role="switch" aria-label="light/dark mode">
-                <i class="far fa-lightbulb"></i>
+<body>
+    <div class="container" id="report-content">
+        <!-- Top bar section with date filter -->
+        <section class="top-bar">
+            <p>Distancing data <span class="report-btn" id="download-pdf">Download Report</span></p>
+            <div class="filter-forms">
+                <form action="/" method="POST">
+                    <label for="start-date">from</label>
+                    <input type="date" name="dateFilter[start]" id="start-date">
+                    <label for="end-date">to</label>
+                    <input type="date" name="dateFilter[end]" id="end-date">
+                    <button class="filter-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="filter-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </form>
+                <form action="/" method="GET">
+                    <button class="reset-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="filter-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                </form>
             </div>
-        </div>
-    </div>
-    <div class="container colored-text mb-5">
-        <div class="mt-3">
-            <div class="row">
-                <div class="col-4">
-                    <!-- Recent data -->
-                    <div class="overflow-auto d-block recent-records-height mt-3">
-                        <table class="table colored-text">
-                            <thead class="table-background">
-                                <tr>
-                                    <th scope="col" colspan="4" class="text-center">Recent Records</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Violation Count</th>
-                                    <th scope="col">Headcount</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Looping through recent records -->
-                                <% if (recentData.length === 0) { %>
-                                    <tr>
-                                        <th scope="col" colspan="4" class="text-center text-muted">No Recent Records</th>
-                                    </tr>
-                                <% } else { %>  
-                                    <% for (let record of recentData) { %>
-                                        <tr>
-                                            <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
-                                            <td><%= record.violationCount %></td>
-                                            <td><%= record.headcount %></td>
-                                            <td>
-                                                <form action="/<%= record._id %> " method="POST">
-                                                    <button class="btn btn-success"><i class="fas fa-file-archive"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    <% } %>
-                                <% } %> 
-                            </tbody>
-                        </table>
+        </section>
+        <!-- Analytics section for graph and cards -->
+        <section class="analytics">
+            <div class="chart-container">
+                <canvas class="bar-chart" id="barChart"></canvas>
+            </div>
+            <div class="cards">
+                <div class="card card-long" id="date-display">
+                    <div class="calendar-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
                     </div>
-                    <!-- For filtering dates -->
-                    <hr>
-                    <h5 class="mt-3">Filter older records</h5>
-                    <% if (startDate && endDate) { %>
-                        <h6 class="text-muted"><i class="far fa-clock"></i> <%= helper.sliceDateString(startDate) %> <i class="fas fa-long-arrow-alt-right"></i> <%= helper.sliceDateString(endDate) %></h6>
+                    <% if (startDate && endDate) { %> 
+                        <p><%= helper.sliceDateString(startDate) %> &#8594; <%= helper.sliceDateString(endDate) %></p>
                     <% } else { %>
-                        <h6 class="text-muted"><i class="far fa-clock"></i> All records shown</h6>
+                        <p>All records shown</p>
                     <% } %> 
-                    <form action="/" class="mt-3" method="POST">
-                        <div class="row gap-2">
-                            <div class="col">
-                                <label for="start-date" class="form-label">From</label>
-                                <input type="date" class="form-control" name="dateFilter[start]" id="start-date" required>
+                </div>
+                <div class="card">
+                    <p class="card-header">Total Violations</p>
+                    <p class="card-subtitle">Violations for period</p>
+                    <p class="short-card-value"><%= totalViolations %></p>
+                </div>
+                <div class="card">
+                    <p class="card-header">Total Headcount</p>
+                    <p class="card-subtitle">Headcount for period</p>
+                    <p class="short-card-value"><%= totalHeadcount %></p>
+                </div>
+                <div class="card card-long">
+                    <p class="card-header">Highest Violation Counts</p>
+                    <p class="card-subtitle">Records with the highest values</p>
+                    <div class="card-body">
+                        <% for (let record of topViolations) { %>
+                            <div class="top-item">
+                                <p class="top-value"><%= record.violationCount %></p>
+                                <p class="top-date"><%= helper.sliceDateString(record.recordDate) %></p>
                             </div>
-                            <div class="col">
-                                <label for="end-date" class="form-label">To</label>
-                                <input type="date" class="form-control" name="dateFilter[end]" id="end-date" required>
-                            </div>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-success mt-3">Filter</button>
-                        </div>
-                    </form>
-                    <form action="/" class="mt-3" method="GET">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-primary">Reset</button>
-                        </div>
-                    </form>
-                    <!-- Old data table -->
-                    <div class="overflow-auto d-block old-records-height mt-3">
-                        <table class="table colored-text">
-                            <thead class="table-background">
-                                <tr>
-                                    <th scope="col" colspan="4" class="text-center">Older Records</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Violation Count</th>
-                                    <th scope="col">Headcount</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Looping through old records -->
-                                <% if (oldData.length === 0) { %>
-                                    <tr>
-                                        <th scope="col" colspan="4" class="text-center text-muted">No Old Records</th>
-                                    </tr>
-                                <% } else { %> 
-                                    <% for (let record of oldData) { %>
-                                        <tr>
-                                            <th scope="row"><%= helper.sliceDateString(record.recordDate) %></th>
-                                            <td><%= record.violationCount %></td>
-                                            <td><%= record.headcount %></td>
-                                            <td>
-                                                <form action="/<%= record._id %>?_method=DELETE" method="POST">
-                                                    <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    <% } %>
-                                <% } %> 
-                            </tbody>
-                        </table>
+                        <% } %> 
                     </div>
                 </div>
-                <div class="col-8">
-                    <!-- For Chart -->
-                    <canvas class="graph-background colored-text rounded" id="barChart"></canvas>
-                    <!-- For aggregated statistics -->
-                    <div class="row mt-3 gy-3">
-                        <div class="col-6">
-                            <div class="card">
-                                <h5 class="card-header card-header-bg text-center"><i class="far fa-handshake"></i> Total Violations</h5>
-                                <div class="card-body card-body-bg">
-                                    <h6 class="card-title text-center">Aggregated violations for period</h6>
-                                    <h3 class="text-center"><%= totalViolations %> </h3>
-                                </div>
+                <div class="card card-long">
+                    <p class="card-header">Highest Headcounts</p>
+                    <p class="card-subtitle">Records with the highest values</p>
+                    <div class="card-body">
+                        <% for (let record of topHeadcounts) { %>
+                            <div class="top-item">
+                                <p class="top-value"><%= record.headcount %></p>
+                                <p class="top-date"><%= helper.sliceDateString(record.recordDate) %></p>
                             </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="card">
-                                <h5 class="card-header card-header-bg text-center"><i class="fas fa-users"></i> Total Headcount</h5>
-                                <div class="card-body card-body-bg">
-                                    <h6 class="card-title text-center">Aggregated headcount for period</h6>
-                                    <h3 class="text-center"><%= totalHeadcount %> </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="card">
-                                <h5 class="card-header card-header-bg text-center"><i class="fas fa-sort-amount-up"></i> Highest Violation Counts</h5>
-                                <div class="card-body card-body-bg">
-                                    <div class="container w-75">
-                                        <% for (let record of topViolations) { %>
-                                            <h6 class="card-title"><%= helper.sliceDateString(record.recordDate) %> <i class="fas fa-long-arrow-alt-right"></i> <span class="badge bg-danger"><%= record.violationCount %></span></h6>
-                                        <% } %> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="card">
-                                <h5 class="card-header card-header-bg text-center"><i class="fas fa-sort-amount-up"></i> Highest Headcounts</h5>
-                                <div class="card-body card-body-bg">
-                                    <div class="container w-75">
-                                        <% for (let record of topHeadcounts) { %>
-                                            <h6 class="card-title"><%= helper.sliceDateString(record.recordDate) %> <i class="fas fa-long-arrow-alt-right"></i> <span class="badge bg-warning"><%= record.headcount %></span></h6>
-                                        <% } %> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <% } %> 
                     </div>
-                    <form action="/reportView" class="mt-3" method="GET">
-                        <div class="d-grid gap-2 col-4 mx-auto">
-                            <button class="btn btn-info">View Report</button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
+        </section>
+        <section class="data-tables">
+            <div class="recent-data">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4">Recent Data Records</th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Violation Count</th>
+                            <th>Headcount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (recentData.length === 0) { %>
+                            <tr>
+                                <td colspan="4" class="empty-row">No Recent Records</th>
+                            </tr>
+                        <% } else { %> 
+                            <% for (let record of recentData) { %>
+                                <tr>
+                                    <th><%= helper.sliceDateString(record.recordDate) %></th>
+                                    <td><%= record.violationCount %></td>
+                                    <td><%= record.headcount %></td>
+                                    <td>
+                                        <form action="/<%= record._id %> " method="POST" class="table-btn archive-btn">
+                                            <button>Archive
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="archive-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        <% } %> 
+                    </tbody>
+                </table>
+            </div>
+            <div class="old-data">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4">Old Data Records</th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Violation Count</th>
+                            <th>Headcount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (oldData.length === 0) { %>
+                            <tr>
+                                <td colspan="4" class="empty-row">No Old Records</th>
+                            </tr>
+                        <% } else { %> 
+                            <% for (let record of oldData) { %>
+                                <tr>
+                                    <th><%= helper.sliceDateString(record.recordDate) %></th>
+                                    <td><%= record.violationCount %></td>
+                                    <td><%= record.headcount %></td>
+                                    <td>
+                                        <form action="/<%= record._id %>?_method=DELETE" method="POST" class="table-btn delete-btn">
+                                            <button>Delete
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="delete-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        <% } %> 
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
-    <footer class="footer accent-background colored-text bg-opacity-25 py-3 mt-auto">
-        <div class="container">
-            <span class="text-muted"><i class="fas fa-terminal"></i> Developed in partnership with Asia Pacific College, Philippines</span>
-        </div>
-    </footer>
 
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
-        integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
-        integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/"
-        crossorigin="anonymous"></script>
-
+    <!-- ChartJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <!-- html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" 
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer"></script>
+    <script src="/javascripts/pdfDownload.js"></script>
 
     <script>
-        // For toggling theme
-        const themeBtn = document.getElementById('theme-btn');
-        themeBtn.addEventListener('click', () => {
-            let theme = getCurrentTheme();
-            if (theme === 'dark') {
-                theme = 'light';
-            } else {
-                theme = 'dark';
-            }
-            localStorage.setItem('dashboard.theme', `${theme}`);
-            loadTheme(theme);
-        });
-
-        const getCurrentTheme = () => {
-            let theme = window.matchMedia('(prefers-color-scheme: dark')
-            .matches ? 'dark' : 'light';
-            localStorage.getItem('dashboard.theme') ? theme = localStorage.getItem('dashboard.theme') : null;
-            return theme;
-        }
-
-        const loadTheme = (theme) => {
-            const root = document.querySelector(':root');
-            root.setAttribute('color-scheme', `${theme}`);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            loadTheme(getCurrentTheme());
-        });
-        
-        // Parsing to access EJS data
+        // For displaying charts
         var oldData = '<%- JSON.stringify(oldData) %>';
         var workableData = JSON.parse(oldData);
 
@@ -243,7 +190,7 @@
         let dateArray = [];
         let violationArray = [];
         let headcountArray = [];
-
+        
         // Pushing record data to arrays
         for (let record of workableData) {
             dateArray.unshift(record.recordDate.slice(0, 10));
@@ -251,10 +198,8 @@
             headcountArray.unshift(record.headcount);
         }
 
-        // For displaying charts
         const barChart = document.getElementById('barChart').getContext('2d');
-
-        Chart.defaults.global.defaultFontColor = '#6A6A6A ';
+        Chart.defaults.global.defaultFontColor = '#000 ';
         const barChartDisplay = new Chart(barChart, {
             type: 'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
             data: {
@@ -263,7 +208,7 @@
                     {
                         label:'Violations',
                         data: violationArray,
-                        backgroundColor: '#e07502',
+                        backgroundColor: '#087f5b',
                         fill: true,
                         borderColor: '#000',
                         color: '#000',
@@ -272,7 +217,7 @@
                     {
                         label:'Headcount',
                         data: headcountArray,
-                        backgroundColor: '#fcca00',
+                        backgroundColor: '#38d9a9',
                         fill: true,
                         borderColor: '#000',
                         color: '#000',
@@ -283,7 +228,7 @@
             options: {
                 title: {
                     display: true,
-                    text: 'Violation Records',
+                    text: 'Violation and Headcount Records',
                     fontSize: 25
                 },
                 layout: {
@@ -296,11 +241,10 @@
                 },
                 tooltips: {
                     enabled: true
-                }
+                },
+                maintainAspectRatio: false
             }
         });
-
     </script>
 </body>
-
 </html>
