@@ -19,9 +19,9 @@
             <div class="filter-forms">
                 <form action="/" method="POST">
                     <label for="start-date">from</label>
-                    <input type="date" name="dateFilter[start]" id="start-date">
+                    <input type="date" name="dateFilter[start]" id="start-date" required>
                     <label for="end-date">to</label>
-                    <input type="date" name="dateFilter[end]" id="end-date">
+                    <input type="date" name="dateFilter[end]" id="end-date" required>
                     <button class="filter-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" class="filter-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
@@ -91,6 +91,7 @@
                 </div>
             </div>
         </section>
+        <!-- Table section for data -->
         <section class="data-tables">
             <div class="recent-data">
                 <table>
