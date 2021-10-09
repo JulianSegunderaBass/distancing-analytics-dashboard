@@ -228,7 +228,7 @@ table {
     font-size: 14px;
 }
 th, td {
-    padding: 14px 20px;
+    padding: 14px 16px;
     text-align: left;
 }
 thead tr {
@@ -236,10 +236,16 @@ thead tr {
     color: var(--light-accent-text);
 }
 thead th {
+    width: 20%;
+}
+thead tr:nth-child(2) th:nth-of-type(4) {
     width: 30%;
 }
 thead tr:nth-child(2) th:last-child {
     width: 10%;
+}
+.record-location {
+    line-height: 1.5;
 }
 thead tr:nth-child(1) th {
     text-align: center;

@@ -13,6 +13,10 @@ const RecentDataSchema = new mongoose.Schema({
     headcount: {
         type: Number,
         required: true
+    },
+    recordLocation: {
+        type: String,
+        required: true
     }
 });
 

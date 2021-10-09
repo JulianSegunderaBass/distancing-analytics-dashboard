@@ -116,6 +116,7 @@ app.post('/:recordID', async (req, res) => {
         recordDate: recentData.recordDate,
         violationCount: recentData.violationCount,
         headcount: recentData.headcount,
+        recordLocation: recentData.recordLocation
     });
     await archivedData.save();
 

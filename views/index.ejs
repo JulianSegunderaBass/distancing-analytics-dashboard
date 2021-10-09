@@ -97,19 +97,20 @@
                 <table>
                     <thead>
                         <tr>
-                            <th colspan="4">Recent Data Records</th>
+                            <th colspan="5">Recent Data Records</th>
                         </tr>
                         <tr>
                             <th>Date</th>
                             <th>Violation Count</th>
                             <th>Headcount</th>
+                            <th>Location</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <% if (recentData.length === 0) { %>
                             <tr>
-                                <td colspan="4" class="empty-row">No Recent Records</th>
+                                <td colspan="5" class="empty-row">No Recent Records</th>
                             </tr>
                         <% } else { %> 
                             <% for (let record of recentData) { %>
@@ -117,6 +118,7 @@
                                     <th><%= helper.sliceDateString(record.recordDate) %></th>
                                     <td><%= record.violationCount %></td>
                                     <td><%= record.headcount %></td>
+                                    <td class="record-location"><%= record.recordLocation %></td>
                                     <td>
                                         <form action="/<%= record._id %> " method="POST" class="table-btn archive-btn">
                                             <button>Archive
@@ -136,19 +138,20 @@
                 <table>
                     <thead>
                         <tr>
-                            <th colspan="4">Old Data Records</th>
+                            <th colspan="5">Old Data Records</th>
                         </tr>
                         <tr>
                             <th>Date</th>
                             <th>Violation Count</th>
                             <th>Headcount</th>
+                            <th>Location</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <% if (oldData.length === 0) { %>
                             <tr>
-                                <td colspan="4" class="empty-row">No Old Records</th>
+                                <td colspan="5" class="empty-row">No Old Records</th>
                             </tr>
                         <% } else { %> 
                             <% for (let record of oldData) { %>
@@ -156,6 +159,7 @@
                                     <th><%= helper.sliceDateString(record.recordDate) %></th>
                                     <td><%= record.violationCount %></td>
                                     <td><%= record.headcount %></td>
+                                    <td class="record-location"><%= record.recordLocation %></td>
                                     <td>
                                         <form action="/<%= record._id %>?_method=DELETE" method="POST" class="table-btn delete-btn">
                                             <button>Delete

@@ -27,6 +27,16 @@ const seedDB = async () => {
     await RecentData.deleteMany({});
     await OldData.deleteMany({});
 
+    // Array of test location values
+    const locationArr = [
+        'Asia Pacific College: Floor 1', 
+        'Asia Pacific College: Floor 3', 
+        'Asia Pacific College: MPH 1',
+        'Barangay Magallanes: Floor 1',
+        'Barangay Magallanes: Floor 3',
+        'Barangay Magallanes: Reception'
+    ];
+
     // Creating recent data records
     for (i = 1; i <= 3; i++) {
         let currentDate = new Date();
@@ -35,7 +45,8 @@ const seedDB = async () => {
         const recentData = new RecentData({
             recordDate: previousDate,
             violationCount: Math.floor(Math.random() * 500),
-            headcount: Math.floor(Math.random() * 1000)
+            headcount: Math.floor(Math.random() * 1000),
+            recordLocation: locationArr[Math.floor(Math.random() * locationArr.length)]
         });
         await recentData.save();
     }
@@ -48,7 +59,8 @@ const seedDB = async () => {
         const oldData = new OldData({
             recordDate: previousDate,
             violationCount: Math.floor(Math.random() * 500),
-            headcount: Math.floor(Math.random() * 1000)
+            headcount: Math.floor(Math.random() * 1000),
+            recordLocation: locationArr[Math.floor(Math.random() * locationArr.length)]
         });
         await oldData.save();
     }
