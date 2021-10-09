@@ -13,6 +13,8 @@ Built with:
 
 ### Running locally
 
-With your local MongoDB instance running, use `node app.js` to run the file and `node seeder.js` to reset the test data.
+Use `npm install` in your local project directory to set up the dependencies. 
+
+Then, with your local MongoDB instance running, use `node app.js` to run the file and `node seeder.js` to reset the test data.
 
 [Heroku access link](https://distancing-analytics-dashboard.herokuapp.com/)
