@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 const mongoose = require('mongoose');
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
+const { db } = require('./models/recentData');
 
 // Mongoose Connection
 const mongoConnection = process.env.MONGODB_URL || 'mongodb://localhost:27017/distancing-data';
