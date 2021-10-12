@@ -14,6 +14,7 @@ const helper = require('./public/javascripts/helper');
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
 // Error handling
+const session = require('express-session');
 const flash = require('connect-flash');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
@@ -44,6 +45,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 // For other methods
 app.use(methodOverride('_method'));
+// For session
+const sessionConfig = {
+    secret: 'temp-dashboard-secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+app.use(session(sessionConfig));
+// For flash
+app.use(flash());
+
+// For saving flash messages
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 // !!! ROUTES !!!
 app.get('/', catchAsync(async (req, res) => {
@@ -57,15 +79,17 @@ app.get('/', catchAsync(async (req, res) => {
     // Getting highest values
     const topViolations = await OldData.find({}).sort({ violationCount: -1 }).limit(3);
     const topHeadcounts = await OldData.find({}).sort({ headcount: -1 }).limit(3);
-    // Saving to local app storage
-    app.locals.reportRecords = oldData;
-    app.locals.totalViolations = totalViolations;
-    app.locals.totalHeadcount = totalHeadcount;
-    app.locals.topViolations = topViolations;
-    app.locals.topHeadcounts = topHeadcounts;
-    app.locals.startDate = startDate;
-    app.locals.endDate = endDate;
-    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    res.render('index', { 
+        recentData, 
+        oldData, 
+        helper, 
+        startDate, 
+        endDate, 
+        totalViolations, 
+        totalHeadcount, 
+        topViolations, 
+        topHeadcounts
+    });
 }));
 
 app.post('/', catchAsync(async (req, res) => {
@@ -91,15 +115,17 @@ app.post('/', catchAsync(async (req, res) => {
     const topHeadcounts = await OldData.find({
         recordDate: { $gte: startDate, $lte: endDate }
     }).sort({ headcount: -1 }).limit(3);
-    // Saving to local app storage
-    app.locals.reportRecords = oldData;
-    app.locals.totalViolations = totalViolations;
-    app.locals.totalHeadcount = totalHeadcount;
-    app.locals.topViolations = topViolations;
-    app.locals.topHeadcounts = topHeadcounts;
-    app.locals.startDate = startDate;
-    app.locals.endDate = endDate;
-    res.render('index', { recentData, oldData, helper, startDate, endDate, totalViolations, totalHeadcount, topViolations, topHeadcounts });
+    res.render('index', { 
+        recentData, 
+        oldData, 
+        helper, 
+        startDate, 
+        endDate, 
+        totalViolations, 
+        totalHeadcount, 
+        topViolations, 
+        topHeadcounts 
+    });
 }));
 
 app.post('/:recordID', catchAsync(async (req, res, next) => {
@@ -114,11 +140,13 @@ app.post('/:recordID', catchAsync(async (req, res, next) => {
     await archivedData.save();
     // Deleting the record from the recent data list
     await recentData.delete();
+    req.flash('success', 'Successfully archived record.');
     res.redirect('/');
 }));
 
 app.delete('/:recordID', catchAsync(async (req, res) => {
     const record = await OldData.findByIdAndDelete(req.params.recordID);
+    req.flash('success', 'Successfully deleted record.');
     res.redirect('/');
 }));
 
@@ -126,7 +154,8 @@ app.delete('/:recordID', catchAsync(async (req, res) => {
 app.use((err, req, res, next) => {
     const {statusCode = 500, message = 'ERROR'} = err;
     if (!err.message) err.message = 'Something went wrong.';
-    res.status(statusCode).send(message);
+    req.flash('error', `Code ${statusCode}: ${message}`);
+    res.redirect('/');
 });
 
 // Setting port

@@ -23,6 +23,11 @@ FONT SIZE SYSTEM (px)
     --font-main: #343a40;
     --font-muted: #868e96;
     --light-accent-text: #e6fcf5;
+
+    --flash-error-container: #ffa8a8;
+    --flash-error-font: #c92a2a;
+    --flash-success-container: #8ce99a;
+    --flash-success-font: #2b8a3e;
 }
 
 * {
@@ -203,6 +208,30 @@ body {
     height: 16px;
     width: 16px;
     stroke: var(--accent-primary);
+}
+/* For flash messages section */
+.flash-messages {
+    margin-top: 24px;
+}
+.success-container, .error-container {
+    border-radius: 9px;
+    padding: 8px 16px;
+}
+.success-container p, .error-container p {
+    font-weight: 500;
+    text-align: center;
+}
+.success-container {
+    background-color: var(--flash-success-container);
+}
+.error-container {
+    background-color: var(--flash-error-container);
+}
+.success-container p {
+    color: var(--flash-success-font);
+}
+.error-container p {
+    color: var(--flash-error-font);
 }
 /* For data tables section */
 .data-tables {

@@ -91,6 +91,21 @@
                 </div>
             </div>
         </section>
+        <!-- Section for success or error messages -->
+        <% if (success && success.length) { %>
+            <section class="flash-messages">
+                <div class="success-container">
+                    <p><%= success %></p>
+                </div>
+            </section>
+        <% } %>
+        <% if (error && error.length) { %>
+            <section class="flash-messages">
+                <div class="error-container">
+                    <p><%= error %></p>
+                </div>
+            </section>
+        <% } %>
         <!-- Table section for data -->
         <section class="data-tables">
             <div class="recent-data">
