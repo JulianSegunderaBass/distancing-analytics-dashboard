@@ -9,7 +9,7 @@ const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
-const helper = require('./public/javascripts/helper');
+const helper = require('./utils/helper');
 // Models
 const RecentData = require('./models/recentData');
 const OldData = require('./models/oldData');
