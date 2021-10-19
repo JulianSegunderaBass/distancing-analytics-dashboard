@@ -45,8 +45,8 @@ const seedDB = async () => {
         previousDate.setDate(currentDate.getDate() - i);
         const recentData = new RecentData({
             recordDate: previousDate,
-            violationCount: Math.floor(Math.random() * 500),
-            headcount: Math.floor(Math.random() * 1000),
+            violationCount: Math.floor(Math.random() * (50 - 10 + 1) + 10),
+            headcount: Math.floor(Math.random() * (50 - 10 + 1) + 10),
             recordLocation: locationArr[Math.floor(Math.random() * locationArr.length)]
         });
         await recentData.save();
@@ -59,8 +59,8 @@ const seedDB = async () => {
         previousDate.setDate(currentDate.getDate() - i);
         const oldData = new OldData({
             recordDate: previousDate,
-            violationCount: Math.floor(Math.random() * 500),
-            headcount: Math.floor(Math.random() * 1000),
+            violationCount: Math.floor(Math.random() * (50 - 10 + 1) + 10),
+            headcount: Math.floor(Math.random() * (50 - 10 + 1) + 10),
             recordLocation: locationArr[Math.floor(Math.random() * locationArr.length)]
         });
         await oldData.save();

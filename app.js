@@ -98,6 +98,10 @@ app.post('/', catchAsync(async (req, res) => {
     // Converting string date inputs to date objects
     const startDate = new Date(start);
     const endDate = new Date(end);
+    // Throwing an error if the filter is invalid
+    if (startDate >= endDate) {
+        throw new ExpressError('Please select a valid date range filter', 500);
+    }
     // Offsetting enddate to include end date in result
     endDate.setDate(endDate.getDate() + 1);
     // Filtering and fetching data
