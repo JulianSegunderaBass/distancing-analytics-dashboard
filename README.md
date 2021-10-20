@@ -6,10 +6,10 @@ This dashboard receives incoming data from a separate GUI built with Python and 
 
 Built with:
 
-![Node.js](https://img.shields.io/badge/Node.js-informational?style=flat&logo=Node.js&logoColor=white&color=339933)
-![Node Express](https://img.shields.io/badge/Express-informational?style=flat&logo=Express&logoColor=white&color=000000)
-![MongoDB](https://img.shields.io/badge/MongoDB-informational?style=flat&logo=MongoDB&logoColor=white&color=47A248)
-![VanillaCSS](https://img.shields.io/badge/VanillaCSS-informational?style=flat&logo=CSS3&logoColor=white&color=1572B6)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-white?style=for-the-badge&logo=mongodb&logoColor=4EA94B)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
 ### Running locally
 
